@@ -8,7 +8,7 @@ import {
     useDispatch,
     useSelector,
 } from 'react-redux';
-import {addAxiosInterceptors} from 'misc/requests';
+import { addAxiosInterceptors } from 'misc/requests';
 import * as pages from 'constants/pages';
 import AuthoritiesProvider from 'misc/providers/AuthoritiesProvider';
 import DefaultPage from 'pageProviders/Default';
@@ -19,6 +19,7 @@ import pageURLs from 'constants/pagesURLs';
 import SecretPage from 'pageProviders/Secret';
 import ThemeProvider from 'misc/providers/ThemeProvider';
 import UserProvider from 'misc/providers/UserProvider';
+
 import CardsPage from 'pages/cards';
 
 import actionsUser from '../actions/user';
@@ -40,7 +41,7 @@ function App() {
         isFetchingSignIn,
         isFetchingSignUp,
         isFetchingUser,
-    } = useSelector(({user}) => user);
+    } = useSelector(({ user }) => user);
 
     useEffect(() => {
         addAxiosInterceptors({
@@ -58,29 +59,29 @@ function App() {
             <AuthoritiesProvider>
                 <ThemeProvider>
                     <BrowserRouter>
-                        <SearchParamsConfigurator/>
+                        <SearchParamsConfigurator />
                         {state.componentDidMount && (
                             <IntlProvider>
-                                <Header onLogout={() => dispatch(actionsUser.fetchSignOut())}/>
+                                <Header onLogout={() => dispatch(actionsUser.fetchSignOut())} />
                                 {isFetchingUser && (
                                     <PageContainer>
-                                        <Loading/>
+                                        <Loading />
                                     </PageContainer>
                                 )}
                                 {!isFetchingUser && (
                                     <Routes>
                                         <Route
-                                            element={<DefaultPage/>}
+                                            element={<DefaultPage />}
                                             path={`${pageURLs[pages.defaultPage]}`}
                                         />
                                         <Route
-                                            element={<SecretPage/>}
+                                            element={<SecretPage />}
                                             path={`${pageURLs[pages.secretPage]}`}
                                         />
 
                                         <Route
                                             path="/cards/*"
-                                            element={<CardsPage/>}
+                                            element={<CardsPage />}
                                         />
 
                                         <Route
