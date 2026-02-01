@@ -85,8 +85,8 @@ const rightPanelItemTypes = {
 };
 
 function Header({
-  onLogout,
-}) {
+                  onLogout,
+                }) {
   const { theme } = useTheme();
   const { formatMessage } = useIntl();
   const changePage = useChangePage();
@@ -110,8 +110,8 @@ function Header({
     if (user.isAuthorized) {
       result.push(rightPanelItemTypes.USER_NAME);
     } else if (
-      !user.isFetchingUser
-      && currentPage !== pages.login
+        !user.isFetchingUser
+        && currentPage !== pages.login
     ) {
       result.push(rightPanelItemTypes.LOGIN);
     }
@@ -126,180 +126,205 @@ function Header({
   }, [user, currentPage]);
 
   return (
-    <div className={classes.container}>
-      <div className={classes.content}>
-        <div className={classes.toolBarContainerLeft}>
-          <LeftNavBar />
-          <Link
-            to={{
-              pathname: `${pagesURLs[pages.defaultPage]}`,
-            }}
-          >
-            <Hover
-              light
-              selected={currentPage === pages.defaultPage}
+      <div className={classes.container}>
+        <div className={classes.content}>
+          <div className={classes.toolBarContainerLeft}>
+            <LeftNavBar />
+            <Link
+                to={{
+                  pathname: `${pagesURLs[pages.defaultPage]}`,
+                }}
             >
-              <div className={classes.hover}>
-                <Logo compact={isMobile} />
-              </div>
-            </Hover>
-          </Link>
-        </div>
-        <div className={classes.toolBarContainerRight}>
-          {actualOrderedRightPanelItemTypes.map((itemType) => (
-            <>
-              {itemType === rightPanelItemTypes.USER_NAME && (
-                <div ref={userMenuRef}>
-                  <Hover
-                    light
-                    onClick={() => setState({
-                      ...state,
-                      isUserMenuOpened: true,
-                    })}
-                    selected={state.isUserMenuOpened}
-                  >
-                    <div className={classes.hover}>
-                      <div
-                        className={isMobile ? classes.userNameMobile : ''}
-                      >
-                        <Typography
-                          color="paper"
-                          noWrap
-                          variant="subtitle"
-                        >
-                          {!isMobile
-                            ? (
-                              <strong>
-                                {userName}
-                              </strong>
-                            )
-                            : userName
-                          }
-                        </Typography>
-                      </div>
-                    </div>
-                  </Hover>
+              <Hover
+                  light
+                  selected={currentPage === pages.defaultPage}
+              >
+                <div className={classes.hover}>
+                  <Logo compact={isMobile} />
                 </div>
-              )}
-              {itemType === rightPanelItemTypes.LOGIN && (
-                <Link
-                  to={{
-                    pathname: `${pagesURLs[pages.login]}`,
-                  }}
-                >
-                  <Button
-                    colorVariant="header"
-                    variant="text"
-                  >
-                    <Typography
-                      color="inherit"
-                      variant="subtitle"
-                    >
-                      <strong>
-                        {formatMessage({ id: 'signIn' })}
-                      </strong>
-                    </Typography>
-                  </Button>
-                </Link>
-              )}
-              {itemType === rightPanelItemTypes.LANGUAGE && (
-                <>
-                  <div className={classes.selectedLang}>
-                    <Typography
-                      color="paper"
-                      noWrap
-                    >
-                      {(isMobile
-                        ? interfaceLagsTranslateShort
-                        : interfaceLagsTranslate
-                      )[locationSearch.lang]}
-                    </Typography>
-                  </div>
-                  <div ref={langsMenuRef}>
-                    <IconButton
-                      colorVariant="header"
-                      onClick={() => setState({
-                        ...state,
-                        isLangsMenuOpened: true,
-                      })}
-                    >
-                      <IconGlobus
-                        color="header"
-                        size={32}
-                      />
-                    </IconButton>
-                  </div>
-                </>
-              )}
-              {itemType === rightPanelItemTypes.SEPARATOR && (
-                <Typography
-                  color="paper"
-                  variant="subtitle"
-                >
-                  <strong>
-                    |
-                  </strong>
-                </Typography>
-              )}
-            </>
-          ))}
-        </div>
-        <Menu
-          anchorEl={langsMenuRef.current}
-          colorVariant="header"
-          open={state.isLangsMenuOpened}
-          onClose={() => setState({
-            ...state,
-            isLangsMenuOpened: false,
-          })}
-        >
-          {orderedInterfaceLangs.map(lang => (
-            <MenuItem
-              onClick={() => {
-                changePage({
-                  locationSearch: {
-                    ...locationSearch,
-                    lang,
-                  },
-                  replace: true,
-                });
-                setState({
-                  ...state,
-                  isLangsMenuOpened: false,
-                });
-              }}
-              selected={locationSearch.lang === lang}
+              </Hover>
+            </Link>
+
+            <Link
+                to={{
+                  pathname: '/cards',
+                }}
             >
-              <Typography>
-                {interfaceLagsTranslate[lang]}
-              </Typography>
-            </MenuItem>
-          ))}
-        </Menu>
-        <Menu
-          anchorEl={userMenuRef.current}
-          open={state.isUserMenuOpened}
-          onClose={() => setState({
-            ...state,
-            isUserMenuOpened: false,
-          })}
-        >
-          <MenuItem
-            onClick={() => {
-              setState({
+              <Hover
+                  light
+                  selected={currentPage === 'cards' || window.location.pathname.includes('/cards')}
+              >
+                <div className={classes.hover}>
+                  <Typography
+                      color="paper"
+                      variant="subtitle"
+                  >
+                    <strong>
+                      {formatMessage({ id: 'cards.title', defaultMessage: 'Cards' })}
+                    </strong>
+                  </Typography>
+                </div>
+              </Hover>
+            </Link>
+          </div>
+
+          <div className={classes.toolBarContainerRight}>
+            {actualOrderedRightPanelItemTypes.map((itemType, index) => (
+                <React.Fragment key={index}>
+                  {itemType === rightPanelItemTypes.USER_NAME && (
+                      <div ref={userMenuRef}>
+                        <Hover
+                            light
+                            onClick={() => setState({
+                              ...state,
+                              isUserMenuOpened: true,
+                            })}
+                            selected={state.isUserMenuOpened}
+                        >
+                          <div className={classes.hover}>
+                            <div
+                                className={isMobile ? classes.userNameMobile : ''}
+                            >
+                              <Typography
+                                  color="paper"
+                                  noWrap
+                                  variant="subtitle"
+                              >
+                                {!isMobile
+                                    ? (
+                                        <strong>
+                                          {userName}
+                                        </strong>
+                                    )
+                                    : userName
+                                }
+                              </Typography>
+                            </div>
+                          </div>
+                        </Hover>
+                      </div>
+                  )}
+                  {itemType === rightPanelItemTypes.LOGIN && (
+                      <Link
+                          to={{
+                            pathname: `${pagesURLs[pages.login]}`,
+                          }}
+                      >
+                        <Button
+                            colorVariant="header"
+                            variant="text"
+                        >
+                          <Typography
+                              color="inherit"
+                              variant="subtitle"
+                          >
+                            <strong>
+                              {formatMessage({ id: 'signIn' })}
+                            </strong>
+                          </Typography>
+                        </Button>
+                      </Link>
+                  )}
+                  {itemType === rightPanelItemTypes.LANGUAGE && (
+                      <>
+                        <div className={classes.selectedLang}>
+                          <Typography
+                              color="paper"
+                              noWrap
+                          >
+                            {(isMobile
+                                    ? interfaceLagsTranslateShort
+                                    : interfaceLagsTranslate
+                            )[locationSearch.lang]}
+                          </Typography>
+                        </div>
+                        <div ref={langsMenuRef}>
+                          <IconButton
+                              colorVariant="header"
+                              onClick={() => setState({
+                                ...state,
+                                isLangsMenuOpened: true,
+                              })}
+                          >
+                            <IconGlobus
+                                color="header"
+                                size={32}
+                            />
+                          </IconButton>
+                        </div>
+                      </>
+                  )}
+                  {itemType === rightPanelItemTypes.SEPARATOR && (
+                      <Typography
+                          color="paper"
+                          variant="subtitle"
+                      >
+                        <strong>
+                          |
+                        </strong>
+                      </Typography>
+                  )}
+                </React.Fragment>
+            ))}
+          </div>
+
+          <Menu
+              anchorEl={langsMenuRef.current}
+              colorVariant="header"
+              open={state.isLangsMenuOpened}
+              onClose={() => setState({
+                ...state,
+                isLangsMenuOpened: false,
+              })}
+          >
+            {orderedInterfaceLangs.map(lang => (
+                <MenuItem
+                    key={lang}
+                    onClick={() => {
+                      changePage({
+                        locationSearch: {
+                          ...locationSearch,
+                          lang,
+                        },
+                        replace: true,
+                      });
+                      setState({
+                        ...state,
+                        isLangsMenuOpened: false,
+                      });
+                    }}
+                    selected={locationSearch.lang === lang}
+                >
+                  <Typography>
+                    {interfaceLagsTranslate[lang]}
+                  </Typography>
+                </MenuItem>
+            ))}
+          </Menu>
+          <Menu
+              anchorEl={userMenuRef.current}
+              open={state.isUserMenuOpened}
+              onClose={() => setState({
                 ...state,
                 isUserMenuOpened: false,
-              });
-              onLogout();
-            }}
+              })}
           >
-            <Typography>
-              {formatMessage({ id: 'signOut' })}
-            </Typography>
-          </MenuItem>
-        </Menu>
+            <MenuItem
+                onClick={() => {
+                  setState({
+                    ...state,
+                    isUserMenuOpened: false,
+                  });
+                  onLogout();
+                }}
+            >
+              <Typography>
+                {formatMessage({ id: 'signOut' })}
+              </Typography>
+            </MenuItem>
+          </Menu>
+        </div>
       </div>
-    </div>
   );
 }
 
